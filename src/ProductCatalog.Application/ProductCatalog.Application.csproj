@@ -15,4 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ProductCatalog.Domain\ProductCatalog.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ProductCatalog.Application.Tests" />
+  </ItemGroup>
 </Project>
