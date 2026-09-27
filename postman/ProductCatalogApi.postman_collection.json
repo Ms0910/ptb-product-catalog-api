@@ -1,0 +1,222 @@
+{
+  "info": {
+    "name": "Product Catalog API",
+    "description": "Colección de pruebas para la API de catálogo de productos (ptb-product-catalog-api). Ejemplos con productos y precios en pesos colombianos (COP).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "productId", "value": "" },
+    { "key": "productVersion", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health - Live",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health/live"
+          }
+        },
+        {
+          "name": "Health - Ready (DB)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health/ready"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Crear producto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('productId', body.id);",
+                  "    pm.collectionVariables.set('productVersion', body.version);",
+                  "    console.log('productId guardado:', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Actor", "value": "postman-tester" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Teclado Mecánico\",\n  \"description\": \"RGB, switches intercambiables en caliente\",\n  \"price\": 350000.00,\n  \"initialStock\": 25\n}"
+            },
+            "url": "{{baseUrl}}/api/products"
+          }
+        },
+        {
+          "name": "Obtener producto por id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+          }
+        },
+        {
+          "name": "Listar productos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products?page=1&pageSize=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "20" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "sortBy", "value": "Price", "disabled": true },
+                { "key": "sortDirection", "value": "Asc", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar producto (con If-Match)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "If-Match", "value": "\"{{productVersion}}\"" },
+              { "key": "X-Actor", "value": "postman-tester" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Teclado Mecánico (Actualizado)\",\n  \"description\": \"RGB, switches intercambiables en caliente, ahora con reposamuñecas\",\n  \"price\": 399900.00\n}"
+            },
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+          }
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stock",
+      "item": [
+        {
+          "name": "Aumentar stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Idempotency-Key", "value": "{{$guid}}" },
+              { "key": "X-Actor", "value": "postman-tester" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"operation\": \"Increase\",\n  \"quantity\": 10,\n  \"reason\": \"Reabastecimiento\"\n}"
+            },
+            "url": "{{baseUrl}}/api/products/{{productId}}/stock"
+          }
+        },
+        {
+          "name": "Disminuir stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Idempotency-Key", "value": "{{$guid}}" },
+              { "key": "X-Actor", "value": "postman-tester" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"operation\": \"Decrease\",\n  \"quantity\": 5,\n  \"reason\": \"Venta\"\n}"
+            },
+            "url": "{{baseUrl}}/api/products/{{productId}}/stock"
+          }
+        },
+        {
+          "name": "Disminuir stock - más allá del disponible (espera 409)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Idempotency-Key", "value": "{{$guid}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"operation\": \"Decrease\",\n  \"quantity\": 999999,\n  \"reason\": \"Debería fallar\"\n}"
+            },
+            "url": "{{baseUrl}}/api/products/{{productId}}/stock"
+          }
+        },
+        {
+          "name": "Listar historial de stock",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}/stock-movements?page=1&pageSize=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "{{productId}}", "stock-movements"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "20" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenarios de error",
+      "item": [
+        {
+          "name": "Crear producto - datos inválidos (espera 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"price\": -1,\n  \"initialStock\": -5\n}"
+            },
+            "url": "{{baseUrl}}/api/products"
+          }
+        },
+        {
+          "name": "Obtener producto - no existe (espera 404)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/products/00000000-0000-0000-0000-000000000000"
+          }
+        },
+        {
+          "name": "Actualizar producto - If-Match desactualizado (espera 412)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "If-Match", "value": "\"0\"" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cualquiera\",\n  \"price\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
