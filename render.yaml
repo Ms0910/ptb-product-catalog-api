@@ -1,0 +1,25 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# Crea una base de datos PostgreSQL administrada y la API (construida desde el Dockerfile).
+services:
+  - type: web
+    name: ptb-product-catalog-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health/ready
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Database__ApplyMigrationsOnStartup
+        value: "true"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ptb-product-catalog-db
+          property: connectionString
+
+databases:
+  - name: ptb-product-catalog-db
+    plan: free
+    databaseName: product_catalog
+    user: product_catalog
