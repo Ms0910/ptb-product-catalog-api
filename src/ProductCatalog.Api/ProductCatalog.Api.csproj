@@ -4,15 +4,26 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ProductCatalog.Infrastructure\ProductCatalog.Infrastructure.csproj" />
     <ProjectReference Include="..\ProductCatalog.Application\ProductCatalog.Application.csproj" />
   </ItemGroup>
+
+  <!-- Alimenta los XML docs de los contratos de Application al generador de OpenAPI -->
+  <Target Name="AddOpenApiDependencies" AfterTargets="ResolveReferences">
+    <ItemGroup>
+      <AdditionalFiles Include="@(ReferencePath->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferencePath.ProjectName)' == 'ProductCatalog.Application'" KeepMetadata="Identity;HintPath" />
+    </ItemGroup>
+  </Target>
 
 </Project>
