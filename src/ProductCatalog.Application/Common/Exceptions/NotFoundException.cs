@@ -3,7 +3,7 @@ namespace ProductCatalog.Application.Common.Exceptions;
 public sealed class NotFoundException : Exception
 {
     public NotFoundException(string resource, object key)
-        : base($"{resource} '{key}' was not found.")
+        : base($"{resource} '{key}' no encontrado.")
     {
         Resource = resource;
         Key = key;

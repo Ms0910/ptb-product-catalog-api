@@ -11,7 +11,7 @@ namespace ProductCatalog.Application.Products.Validators;
 internal static class ProductRules
 {
     public static IRuleBuilderOptions<T, string> ValidProductName<T>(this IRuleBuilder<T, string> rule) =>
-        rule.Must(name => !string.IsNullOrWhiteSpace(name)).WithMessage("'Name' is required.")
+        rule.Must(name => !string.IsNullOrWhiteSpace(name)).WithMessage("'{PropertyName}' es obligatorio.")
             .MaximumLength(Product.NameMaxLength);
 
     public static IRuleBuilderOptions<T, string?> ValidProductDescription<T>(this IRuleBuilder<T, string?> rule) =>

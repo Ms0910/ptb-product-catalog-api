@@ -7,11 +7,11 @@ namespace ProductCatalog.Application.Products.Contracts;
 public sealed record UpdateProductRequest
 {
     /// <summary>Nombre del producto (obligatorio, máximo 200 caracteres).</summary>
-    /// <example>Mechanical keyboard</example>
+    /// <example>Teclado mecánico</example>
     public required string Name { get; init; }
 
     /// <summary>Descripción opcional (máximo 2000 caracteres). Omitirla borra la descripción.</summary>
-    /// <example>Wireless mechanical keyboard with red switches</example>
+    /// <example>Teclado mecánico inalámbrico con switches rojos</example>
     public string? Description { get; init; }
 
     /// <summary>Precio unitario, mayor a 0 y con máximo 2 decimales.</summary>

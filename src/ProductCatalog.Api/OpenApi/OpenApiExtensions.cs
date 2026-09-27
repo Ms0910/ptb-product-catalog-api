@@ -15,11 +15,11 @@ internal static class OpenApiExtensions
                 Title = "Product Catalog API",
                 Version = "v1",
                 Description = """
-                    REST API to manage a product catalog and its stock.
+                    API REST para gestionar un catálogo de productos y su stock.
 
-                    * Errors follow **RFC 9457 Problem Details** and include a stable `code` and the `traceId`.
-                    * `PATCH /api/products/{id}/stock` is safe under concurrency (row lock) and supports the `Idempotency-Key` header for safe retries.
-                    * `PUT /api/products/{id}` supports optimistic concurrency through `ETag` / `If-Match`.
+                    * Los errores siguen **RFC 9457 Problem Details** e incluyen un `code` estable y el `traceId`.
+                    * `PATCH /api/products/{id}/stock` es seguro ante concurrencia (row lock) y admite el header `Idempotency-Key` para reintentar con seguridad.
+                    * `PUT /api/products/{id}` admite concurrencia optimista mediante `ETag` / `If-Match`.
                     """,
             };
 

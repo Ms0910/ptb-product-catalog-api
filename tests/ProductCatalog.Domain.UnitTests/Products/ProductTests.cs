@@ -168,7 +168,7 @@ public sealed class ProductTests
 
         movement.Quantity.ShouldBe(12);
         movement.ResultingStock.ShouldBe(12);
-        movement.Reason.ShouldBe("Initial stock");
+        movement.Reason.ShouldBe("Stock inicial");
         movement.CreatedBy.ShouldBe("tester");
     }
 }

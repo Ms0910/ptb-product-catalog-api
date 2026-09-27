@@ -8,7 +8,7 @@ internal sealed class StockMovementListQueryValidator : AbstractValidator<StockM
 {
     public StockMovementListQueryValidator()
     {
-        RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
-        RuleFor(x => x.PageSize).InclusiveBetween(1, PaginationDefaults.MaxPageSize);
+        RuleFor(x => x.Page).GreaterThanOrEqualTo(1).WithName("Página");
+        RuleFor(x => x.PageSize).InclusiveBetween(1, PaginationDefaults.MaxPageSize).WithName("Tamaño de página");
     }
 }

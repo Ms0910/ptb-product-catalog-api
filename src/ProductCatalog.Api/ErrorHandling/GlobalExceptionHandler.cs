@@ -46,17 +46,17 @@ internal sealed partial class GlobalExceptionHandler(
 
     private static ProblemDetails Map(Exception exception) => exception switch
     {
-        NotFoundException e => Problem(StatusCodes.Status404NotFound, "Resource not found", e.Message, "not_found"),
+        NotFoundException e => Problem(StatusCodes.Status404NotFound, "Recurso no encontrado", e.Message, "not_found"),
         InsufficientStockException e => WithExtensions(
-            Problem(StatusCodes.Status409Conflict, "Insufficient stock", e.Message, e.Code),
+            Problem(StatusCodes.Status409Conflict, "Stock insuficiente", e.Message, e.Code),
             ("availableStock", e.AvailableStock),
             ("requestedQuantity", e.RequestedQuantity)),
-        DomainException e => Problem(StatusCodes.Status422UnprocessableEntity, "Business rule violated", e.Message, e.Code),
-        ConflictException e => Problem(StatusCodes.Status409Conflict, "Conflict", e.Message, e.Code),
-        PreconditionFailedException e => Problem(StatusCodes.Status412PreconditionFailed, "Precondition failed", e.Message, "precondition_failed"),
-        UnprocessableRequestException e => Problem(StatusCodes.Status422UnprocessableEntity, "Unprocessable request", e.Message, e.Code),
-        BadHttpRequestException e => Problem(e.StatusCode, "Bad request", e.Message, "bad_request"),
-        _ => Problem(StatusCodes.Status500InternalServerError, "Internal server error", "An unexpected error occurred.", "internal_error"),
+        DomainException e => Problem(StatusCodes.Status422UnprocessableEntity, "Regla de negocio incumplida", e.Message, e.Code),
+        ConflictException e => Problem(StatusCodes.Status409Conflict, "Conflicto", e.Message, e.Code),
+        PreconditionFailedException e => Problem(StatusCodes.Status412PreconditionFailed, "Precondición fallida", e.Message, "precondition_failed"),
+        UnprocessableRequestException e => Problem(StatusCodes.Status422UnprocessableEntity, "Solicitud no procesable", e.Message, e.Code),
+        BadHttpRequestException e => Problem(e.StatusCode, "Solicitud incorrecta", "La solicitud HTTP no es válida.", "bad_request"),
+        _ => Problem(StatusCodes.Status500InternalServerError, "Error interno del servidor", "Ocurrió un error inesperado.", "internal_error"),
     };
 
     private static ProblemDetails Problem(int status, string title, string detail, string code)

@@ -7,9 +7,9 @@ internal sealed class CreateProductRequestValidator : AbstractValidator<CreatePr
 {
     public CreateProductRequestValidator()
     {
-        RuleFor(x => x.Name).ValidProductName();
-        RuleFor(x => x.Description).ValidProductDescription();
-        RuleFor(x => x.Price).ValidPrice();
-        RuleFor(x => x.InitialStock).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.Name).ValidProductName().WithName("Nombre");
+        RuleFor(x => x.Description).ValidProductDescription().WithName("Descripción");
+        RuleFor(x => x.Price).ValidPrice().WithName("Precio");
+        RuleFor(x => x.InitialStock).GreaterThanOrEqualTo(0).WithName("Stock inicial");
     }
 }

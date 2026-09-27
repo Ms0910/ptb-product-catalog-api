@@ -59,7 +59,7 @@ public sealed class Product
     {
         if (initialStock < 0)
         {
-            throw new DomainException(ProductErrorCodes.InvalidStock, "Initial stock cannot be negative.");
+            throw new DomainException(ProductErrorCodes.InvalidStock, "El stock inicial no puede ser negativo.");
         }
 
         return new Product(
@@ -93,7 +93,7 @@ public sealed class Product
 
         if ((long)Stock + quantity > int.MaxValue)
         {
-            throw new DomainException(ProductErrorCodes.StockOverflow, "The resulting stock exceeds the maximum allowed value.");
+            throw new DomainException(ProductErrorCodes.StockOverflow, "El stock resultante supera el valor máximo permitido.");
         }
 
         Stock += quantity;
@@ -125,12 +125,12 @@ public sealed class Product
 
         if (string.IsNullOrEmpty(normalized))
         {
-            throw new DomainException(ProductErrorCodes.InvalidName, "Product name is required.");
+            throw new DomainException(ProductErrorCodes.InvalidName, "El nombre del producto es obligatorio.");
         }
 
         if (normalized.Length > NameMaxLength)
         {
-            throw new DomainException(ProductErrorCodes.InvalidName, $"Product name cannot exceed {NameMaxLength} characters.");
+            throw new DomainException(ProductErrorCodes.InvalidName, $"El nombre del producto no puede superar los {NameMaxLength} caracteres.");
         }
 
         return normalized;
@@ -142,7 +142,7 @@ public sealed class Product
 
         if (normalized?.Length > DescriptionMaxLength)
         {
-            throw new DomainException(ProductErrorCodes.InvalidDescription, $"Product description cannot exceed {DescriptionMaxLength} characters.");
+            throw new DomainException(ProductErrorCodes.InvalidDescription, $"La descripción del producto no puede superar los {DescriptionMaxLength} caracteres.");
         }
 
         return string.IsNullOrEmpty(normalized) ? null : normalized;
@@ -152,12 +152,12 @@ public sealed class Product
     {
         if (price <= 0 || price > MaxPrice)
         {
-            throw new DomainException(ProductErrorCodes.InvalidPrice, $"Price must be greater than 0 and at most {MaxPrice}.");
+            throw new DomainException(ProductErrorCodes.InvalidPrice, $"El precio debe ser mayor que 0 y como máximo {MaxPrice}.");
         }
 
         if (decimal.Round(price, 2) != price)
         {
-            throw new DomainException(ProductErrorCodes.InvalidPrice, "Price cannot have more than 2 decimal places.");
+            throw new DomainException(ProductErrorCodes.InvalidPrice, "El precio no puede tener más de 2 decimales.");
         }
 
         // Normaliza la escala a 2 decimales (5 -> 5.00) para que el valor sea idéntico antes y después de persistirlo.
@@ -170,7 +170,7 @@ public sealed class Product
 
         if (string.IsNullOrEmpty(normalized))
         {
-            throw new DomainException(ProductErrorCodes.InvalidActor, "Actor is required.");
+            throw new DomainException(ProductErrorCodes.InvalidActor, "El actor es obligatorio.");
         }
 
         return normalized;
@@ -180,7 +180,7 @@ public sealed class Product
     {
         if (quantity <= 0)
         {
-            throw new DomainException(ProductErrorCodes.InvalidQuantity, "Quantity must be greater than 0.");
+            throw new DomainException(ProductErrorCodes.InvalidQuantity, "La cantidad debe ser mayor que 0.");
         }
     }
 }

@@ -11,7 +11,7 @@ internal sealed class ProductService(
     IUnitOfWork unitOfWork,
     TimeProvider timeProvider) : IProductService
 {
-    private const string ProductResource = "Product";
+    private const string ProductResource = "Producto";
 
     public async Task<ProductResponse> CreateAsync(CreateProductRequest request, string actor, CancellationToken cancellationToken)
     {
@@ -150,7 +150,7 @@ internal sealed class ProductService(
         {
             throw new UnprocessableRequestException(
                 "idempotency_key_reused",
-                "The Idempotency-Key was already used with a different request.");
+                "La Idempotency-Key ya fue usada con una solicitud distinta.");
         }
 
         return new StockAdjustmentResult(response, IsReplay: true);

@@ -50,7 +50,7 @@ public sealed class StockMovement
     public static StockMovement InitialStock(Product product, string createdBy, DateTimeOffset now)
     {
         ArgumentNullException.ThrowIfNull(product);
-        return new StockMovement(product.Id, product.Stock, product.Stock, "Initial stock", null, createdBy, now);
+        return new StockMovement(product.Id, product.Stock, product.Stock, "Stock inicial", null, createdBy, now);
     }
 
     internal static StockMovement Record(Product product, int quantity, string? reason, string? idempotencyKey, string createdBy, DateTimeOffset now) =>

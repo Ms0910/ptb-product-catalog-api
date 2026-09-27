@@ -186,14 +186,14 @@ Cada ajuste se registra en `stock_movements`, en la misma transacción. El inven
 
 ## Errores
 
-Todas las respuestas de error siguen **RFC 9457 (Problem Details)**, con un `code` estable y el `traceId`:
+Todas las respuestas de error siguen **RFC 9457 (Problem Details)**, con un `code` estable y el `traceId`. Los textos (`title`, `detail` y mensajes de validación) están en español; el `code` se mantiene en inglés como identificador estable para los clientes:
 
 ```json
 {
   "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
-  "title": "Insufficient stock",
+  "title": "Stock insuficiente",
   "status": 409,
-  "detail": "Insufficient stock for product '01a0db04-…'. Available: 7, requested: 100.",
+  "detail": "Stock insuficiente para el producto '01a0db04-…'. Disponible: 7, solicitado: 100.",
   "instance": "PATCH /api/products/01a0db04-…/stock",
   "code": "product.insufficient_stock",
   "availableStock": 7,

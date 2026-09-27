@@ -97,7 +97,7 @@ public sealed class ProductsController(IProductService productService) : Control
     {
         if (!EntityTag.TryParseVersion(ifMatch, out var expectedVersion))
         {
-            ModelState.AddModelError("If-Match", "The If-Match header must be an ETag returned by this API (e.g. \"1234\").");
+            ModelState.AddModelError("If-Match", "El header If-Match debe ser un ETag devuelto por esta API (p. ej. \"1234\").");
             return ValidationProblem(ModelState);
         }
 
@@ -152,7 +152,7 @@ public sealed class ProductsController(IProductService productService) : Control
     public async Task<ActionResult<StockAdjustmentResponse>> AdjustStock(
         Guid id,
         AdjustStockRequest request,
-        [FromHeader(Name = "Idempotency-Key"), MaxLength(StockMovement.IdempotencyKeyMaxLength)] string? idempotencyKey,
+        [FromHeader(Name = "Idempotency-Key"), MaxLength(StockMovement.IdempotencyKeyMaxLength, ErrorMessage = "El header Idempotency-Key no puede superar los {1} caracteres.")] string? idempotencyKey,
         [FromHeader(Name = "X-Actor")] string? actor,
         CancellationToken cancellationToken)
     {

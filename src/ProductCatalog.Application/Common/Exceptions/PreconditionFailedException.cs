@@ -6,7 +6,7 @@ namespace ProductCatalog.Application.Common.Exceptions;
 public sealed class PreconditionFailedException : Exception
 {
     public PreconditionFailedException()
-        : base("The resource was modified by another request. Fetch it again and retry.")
+        : base("El recurso fue modificado por otra solicitud. Vuelve a consultarlo e inténtalo de nuevo.")
     {
     }
 

@@ -7,7 +7,7 @@ public sealed class InsufficientStockException : DomainException
     public InsufficientStockException(Guid productId, int availableStock, int requestedQuantity)
         : base(
             ProductErrorCodes.InsufficientStock,
-            $"Insufficient stock for product '{productId}'. Available: {availableStock}, requested: {requestedQuantity}.")
+            $"Stock insuficiente para el producto '{productId}'. Disponible: {availableStock}, solicitado: {requestedQuantity}.")
     {
         ProductId = productId;
         AvailableStock = availableStock;

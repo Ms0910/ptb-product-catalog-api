@@ -17,16 +17,16 @@ internal sealed class UnitOfWork(CatalogDbContext context) : IUnitOfWork
         {
             throw new ConflictException(
                 "concurrency_conflict",
-                "The resource was modified by another request. Fetch it again and retry.",
+                "El recurso fue modificado por otra solicitud. Vuelve a consultarlo e inténtalo de nuevo.",
                 exception);
         }
         catch (DbUpdateException exception) when (exception.InnerException is PostgresException postgres)
         {
             throw postgres.SqlState switch
             {
-                PostgresErrorCodes.UniqueViolation => new ConflictException("duplicate", "A resource with the same unique value already exists.", exception),
-                PostgresErrorCodes.CheckViolation => new ConflictException("constraint_violation", "The change violates a data integrity rule.", exception),
-                PostgresErrorCodes.ForeignKeyViolation => new ConflictException("constraint_violation", "The change references a resource that no longer exists.", exception),
+                PostgresErrorCodes.UniqueViolation => new ConflictException("duplicate", "Ya existe un recurso con el mismo valor único.", exception),
+                PostgresErrorCodes.CheckViolation => new ConflictException("constraint_violation", "El cambio incumple una regla de integridad de datos.", exception),
+                PostgresErrorCodes.ForeignKeyViolation => new ConflictException("constraint_violation", "El cambio hace referencia a un recurso que ya no existe.", exception),
                 _ => exception,
             };
         }

@@ -12,7 +12,7 @@ public class DomainException : Exception
     }
 
     public DomainException()
-        : this("domain.error", "A business rule was violated.")
+        : this("domain.error", "Se incumplió una regla de negocio.")
     {
     }
 

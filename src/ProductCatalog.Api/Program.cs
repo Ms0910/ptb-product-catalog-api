@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ProductCatalog.Api;
 using ProductCatalog.Api.OpenApi;
 using ProductCatalog.Application;
@@ -35,8 +36,8 @@ app.UseApiDocumentation();
 
 app.MapControllers();
 
-app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
-app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = check => check.Tags.Contains("ready") });
+app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false, ResponseWriter = WriteHealthResponse });
+app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = check => check.Tags.Contains("ready"), ResponseWriter = WriteHealthResponse });
 
 if (app.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup"))
 {
@@ -44,6 +45,18 @@ if (app.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup"))
 }
 
 await app.RunAsync();
+
+static Task WriteHealthResponse(HttpContext context, HealthReport report)
+{
+    context.Response.ContentType = "text/plain; charset=utf-8";
+
+    return context.Response.WriteAsync(report.Status switch
+    {
+        HealthStatus.Healthy => "Saludable",
+        HealthStatus.Degraded => "Degradado",
+        _ => "No saludable",
+    });
+}
 
 /// <summary>Punto de entrada, expuesto para las pruebas de integración (<c>WebApplicationFactory</c>).</summary>
 public partial class Program;

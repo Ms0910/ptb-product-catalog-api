@@ -12,6 +12,6 @@ public sealed record AdjustStockRequest
     public required int Quantity { get; init; }
 
     /// <summary>Nota opcional almacenada en el historial de stock (máximo 250 caracteres).</summary>
-    /// <example>Order #1234</example>
+    /// <example>Pedido #1234</example>
     public string? Reason { get; init; }
 }
