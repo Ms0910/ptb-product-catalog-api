@@ -26,8 +26,32 @@ internal static class OpenApiExtensions
             return Task.CompletedTask;
         }));
 
+        services.AddOpenApi(options => options.AddOperationTransformer((operation, _, _) =>
+        {
+            if (operation.RequestBody is { } requestBody
+                && requestBody.Content?.TryGetValue("application/json", out var mediaType) == true
+                && mediaType?.Schema is OpenApiSchemaReference schemaReference
+                && schemaReference.Reference.Id is { } schemaId
+                && RequestBodyDescriptions.TryGetValue(schemaId, out var description))
+            {
+                requestBody.Description = description;
+            }
+
+            return Task.CompletedTask;
+        }));
+
         return services;
     }
+
+    // El generador de OpenAPI toma el <param> equivocado del XML doc para describir el request
+    // body cuando la acción tiene varios parámetros (bug conocido de Microsoft.AspNetCore.OpenApi
+    // con XML comments en controllers); se fuerza la descripción correcta según el schema referenciado.
+    private static readonly Dictionary<string, string> RequestBodyDescriptions = new(StringComparer.Ordinal)
+    {
+        ["CreateProductRequest"] = "Datos del producto a crear.",
+        ["UpdateProductRequest"] = "Nuevos datos del producto.",
+        ["AdjustStockRequest"] = "Operación y cantidad de unidades.",
+    };
 
     public static WebApplication UseApiDocumentation(this WebApplication app)
     {
