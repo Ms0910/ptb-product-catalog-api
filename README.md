@@ -62,7 +62,7 @@ API REST en **.NET 10** para gestionar un catálogo de productos y su stock. Est
 | Documentación | `Microsoft.AspNetCore.OpenApi` + Swagger UI |
 | Logs | Serilog (JSON compacto en producción) |
 | Tests | xUnit, Shouldly, NSubstitute, Testcontainers (PostgreSQL real), NetArchTest |
-| Entrega | Docker (imagen *chiseled*, no-root, ~90 MB), docker-compose, GitHub Actions, Render |
+| Entrega | Docker (imagen *chiseled-extra*, no-root, con ICU), docker-compose, GitHub Actions, Render |
 
 ## Arquitectura
 

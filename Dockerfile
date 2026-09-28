@@ -21,7 +21,9 @@ RUN dotnet publish src/ProductCatalog.Api/ProductCatalog.Api.csproj \
 
 # ---- Runtime ----
 # Imagen "chiseled": sin shell ni gestor de paquetes, corre como usuario no-root por defecto.
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble-chiseled AS runtime
+# Variante "-extra": incluye ICU (sin ella .NET corre en modo globalization-invariant
+# y CultureInfo("es") de FluentValidation lanza CultureNotFoundException).
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble-chiseled-extra AS runtime
 WORKDIR /app
 
 ENV ASPNETCORE_HTTP_PORTS=8080 \
